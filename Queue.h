@@ -1,4 +1,4 @@
-
+#include "Node.h"
 
 typedef struct {
 	 NodePtr headPtr,tailPtr;
@@ -9,19 +9,47 @@ typedef struct {
 void enqueue_struct(Queue* q, int x){
   Node *new_node=(Node*) malloc(sizeof(Node));
 if(new_node){ 
+  new_node->data = x;
+  new_node->nextPtr = NULL;
+
+  if(q->size==0)/*Node แรก*/
+  {
+    q->headPtr = new_node;
+    q->tailPtr = new_node;
+  }
+  else/*Node อื่นๆ*/
+  {
+    q->tailPtr->nextPtr = new_node;
+    q->tailPtr = new_node;
+  }
+  q->size++;
   /*Finish enqueue */
  }
 }
 
 
 int dequeue_struct(Queue *q){
+    if (q->size == 0) {
+        printf("Empty queue\n");
+        return 0;
+    }
    NodePtr t=q->headPtr;
    if(t){
    int value= t->data;
-       /*Finish dequeue */
+   if(q->size>0){
+    
+    if(q->size==1)//ขยับ tail กรณีโหนดสุดท้าย
+    {
+      q->headPtr=NULL;
+      q->tailPtr = NULL;
+    }
+    else{
+      q->headPtr = t->nextPtr;
+    }
+    free(t);
+    q->size--;
+   }
    return value;
    }
-   printf("Empty queue");
-   return 0;
 }
 
